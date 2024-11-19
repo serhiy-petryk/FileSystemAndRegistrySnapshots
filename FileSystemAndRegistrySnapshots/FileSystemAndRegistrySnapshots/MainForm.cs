@@ -166,10 +166,9 @@ namespace FileSystemAndRegistrySnapshots
 
         private string GetDataFolder()
         {
-            var dataFolder = txtDataFolder.Text;
-            if (!Directory.Exists(dataFolder)) dataFolder = Settings.DataFolder;
-            if (!Directory.Exists(dataFolder)) dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            return dataFolder;
+            if (Directory.Exists(txtDataFolder.Text)) return txtDataFolder.Text;
+            if (Directory.Exists(Settings.DataFolder)) return Settings.DataFolder;
+            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         }
     }
 }
