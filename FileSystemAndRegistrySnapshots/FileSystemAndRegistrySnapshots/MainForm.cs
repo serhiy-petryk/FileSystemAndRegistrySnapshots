@@ -61,7 +61,9 @@ namespace FileSystemAndRegistrySnapshots
             btnFileSystemSnapshot.Enabled = false;
             try
             {
-                await Task.Factory.StartNew(() => ScanFileSystem.SaveFileSystemInfoIntoFile(GetDataFolder()));
+                var task = ScanFileSystem.SaveFileSystemInfoIntoFile(GetDataFolder());
+                await Task.Factory.StartNew(() => task);
+                MessageBox.Show($"New FileSystem snapshot file is {task}");
             }
             catch (Exception exception)
             {

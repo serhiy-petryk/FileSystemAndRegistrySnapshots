@@ -119,9 +119,9 @@ namespace FileSystemAndRegistrySnapshots
 
         }
 
-        public static void SaveFileSystemInfoIntoFile(string dataFolder)
+        public static string SaveFileSystemInfoIntoFile(string dataFolder)
         {
-            if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
+            // if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
             if (!Directory.Exists(dataFolder)) throw new Exception($"ERROR! Data folder {dataFolder} doesn't exist");
 
             var pf86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
@@ -129,7 +129,8 @@ namespace FileSystemAndRegistrySnapshots
             var pdFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData); // ProgramData
             var udFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName; // User/AppData
             var wndFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            var folders = new[] { pf86Folder, pfFolder, pdFolder, udFolder, wndFolder }.Distinct().ToArray();
+            var folders2 = new[] { pf86Folder, pfFolder, pdFolder, udFolder, wndFolder }.Distinct().ToArray();
+            var folders = new[] { pf86Folder }.Distinct().ToArray();
 
             var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
             foreach (var folder in folders)
@@ -139,6 +140,8 @@ namespace FileSystemAndRegistrySnapshots
             var entry = new VirtualFileEntry($"{Path.GetFileNameWithoutExtension(zipFileName)}.txt",
                 System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, log)));
             Helpers.ZipVirtualFileEntries(zipFileName, new[] { entry });
+
+            return zipFileName;
         }
 
         private static void ProcessFolder(string folder, List<string> log)
