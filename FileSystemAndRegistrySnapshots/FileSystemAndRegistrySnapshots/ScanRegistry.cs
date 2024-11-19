@@ -32,7 +32,7 @@ namespace FileSystemAndRegistrySnapshots
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
-            var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"RegistryDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmmss}.txt");
+            var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"RegistryDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmm}.txt");
 
             showStatusAction($"Parsing the first file ..");
             var data1 = ParseZipRegistryFile(firstFile); // 1'879'365
