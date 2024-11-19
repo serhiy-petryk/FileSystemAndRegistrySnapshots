@@ -115,8 +115,21 @@ namespace FileSystemAndRegistrySnapshots
             }
         }
 
-        private void btnCompareFileSystemSnapshots_Click(object sender, EventArgs e)
+        private async void btnCompareFileSystemSnapshots_Click(object sender, EventArgs e)
         {
+            btnCompareFileSystemSnapshots.Enabled = false;
+            try
+            {
+                var task = ScanFileSystem.CompareScanFiles(txtFirstFileSystemSnapshotFile.Text, txtSecondFileSystemSnapshotFile.Text);
+                await Task.Factory.StartNew(() => task);
+                MessageBox.Show($"New FileSystem difference file is {task}");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+
+            btnCompareFileSystemSnapshots.Enabled = true;
         }
 
         private void btnSelectFirstRegistrySnapshotFile_Click(object sender, EventArgs e)
@@ -137,9 +150,21 @@ namespace FileSystemAndRegistrySnapshots
             }
         }
 
-        private void btnCompareRegistrySnapshots_Click(object sender, EventArgs e)
+        private async void btnCompareRegistrySnapshots_Click(object sender, EventArgs e)
         {
+            btnCompareRegistrySnapshots.Enabled = false;
+            try
+            {
+                var task = ScanRegistry.CompareRegistryFiles(txtFirstRegistrySnapshotFile.Text, txtSecondRegistrySnapshotFile.Text);
+                await Task.Factory.StartNew(() => task);
+                MessageBox.Show($"New registry difference file is {task}");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
 
+            btnCompareRegistrySnapshots.Enabled = true;
         }
 
         private string GetDataFolder()

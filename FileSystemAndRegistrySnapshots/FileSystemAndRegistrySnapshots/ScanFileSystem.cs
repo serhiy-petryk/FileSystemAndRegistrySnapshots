@@ -19,7 +19,7 @@ namespace FileSystemAndRegistrySnapshots
             var differenceFileName = CompareScanFiles(logFileName1, logFileName2);*/
         }
 
-        private static string CompareScanFiles(string firstFile, string secondFile)
+        public static string CompareScanFiles(string firstFile, string secondFile)
         {
             if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
             if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
