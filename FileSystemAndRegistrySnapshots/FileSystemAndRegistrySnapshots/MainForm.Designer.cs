@@ -33,7 +33,7 @@ namespace FileSystemAndRegistrySnapshots
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.txtDataFolder = new System.Windows.Forms.TextBox();
             this.btnSelectFolder = new System.Windows.Forms.Button();
-            this.btnFileSnapshot = new System.Windows.Forms.Button();
+            this.btnFileSystemSnapshot = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnCompareFileSystemSnapshots = new System.Windows.Forms.Button();
             this.btnSelectSecondFileSystemSnapshotFile = new System.Windows.Forms.Button();
@@ -84,15 +84,15 @@ namespace FileSystemAndRegistrySnapshots
             this.btnSelectFolder.UseVisualStyleBackColor = true;
             this.btnSelectFolder.Click += new System.EventHandler(this.btnSelectFolder_Click);
             // 
-            // btnFileSnapshot
+            // btnFileSystemSnapshot
             // 
-            this.btnFileSnapshot.Location = new System.Drawing.Point(519, 12);
-            this.btnFileSnapshot.Name = "btnFileSnapshot";
-            this.btnFileSnapshot.Size = new System.Drawing.Size(182, 23);
-            this.btnFileSnapshot.TabIndex = 3;
-            this.btnFileSnapshot.Text = "Make file system snapshot";
-            this.btnFileSnapshot.UseVisualStyleBackColor = true;
-            this.btnFileSnapshot.Click += new System.EventHandler(this.btnFileSnapshot_Click);
+            this.btnFileSystemSnapshot.Location = new System.Drawing.Point(519, 12);
+            this.btnFileSystemSnapshot.Name = "btnFileSystemSnapshot";
+            this.btnFileSystemSnapshot.Size = new System.Drawing.Size(182, 23);
+            this.btnFileSystemSnapshot.TabIndex = 3;
+            this.btnFileSystemSnapshot.Text = "Make file system snapshot";
+            this.btnFileSystemSnapshot.UseVisualStyleBackColor = true;
+            this.btnFileSystemSnapshot.Click += new System.EventHandler(this.btnFileSystemSnapshot_Click);
             // 
             // groupBox1
             // 
@@ -217,7 +217,7 @@ namespace FileSystemAndRegistrySnapshots
             this.ClientSize = new System.Drawing.Size(737, 294);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnFileSnapshot);
+            this.Controls.Add(this.btnFileSystemSnapshot);
             this.Controls.Add(this.btnSelectFolder);
             this.Controls.Add(this.txtDataFolder);
             this.Controls.Add(this.statusStrip1);
@@ -240,7 +240,7 @@ namespace FileSystemAndRegistrySnapshots
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.TextBox txtDataFolder;
         private System.Windows.Forms.Button btnSelectFolder;
-        private System.Windows.Forms.Button btnFileSnapshot;
+        private System.Windows.Forms.Button btnFileSystemSnapshot;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCompareFileSystemSnapshots;
         private System.Windows.Forms.Button btnSelectSecondFileSystemSnapshotFile;

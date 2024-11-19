@@ -55,7 +55,7 @@ namespace FileSystemAndRegistrySnapshots
             btnSelectFolder.Enabled = true;
         }
 
-        private void btnFileSnapshot_Click(object sender, EventArgs e)
+        private void btnFileSystemSnapshot_Click(object sender, EventArgs e)
         {
 
         }

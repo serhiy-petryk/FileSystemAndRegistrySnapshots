@@ -29,11 +29,11 @@ namespace FileSystemAndRegistrySnapshots
 
         public static void Start()
         {
-            var zipFileName = $"E:\\Temp\\Reg\\File_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip";
+            var zipFileName = $"E:\\Temp\\Reg\\FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip";
             SaveFileSystemInfoIntoFile(zipFileName);
 
-            /*var logFileName1 = "E:\\Temp\\Reg\\File_SSD_240_202411162300.zip";
-            var logFileName2 = "E:\\Temp\\Reg\\File_SSD_240_202411162330.zip";
+            /*var logFileName1 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162300.zip";
+            var logFileName2 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162330.zip";
             // 68 items
             var differenceFileName = CompareScanFiles(logFileName1, logFileName2, SkipItems);*/
         }
