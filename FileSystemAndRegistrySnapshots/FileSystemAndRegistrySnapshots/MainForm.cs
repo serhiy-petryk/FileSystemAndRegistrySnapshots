@@ -39,45 +39,35 @@ namespace FileSystemAndRegistrySnapshots
             }
         }
 
-        private void btnSelectFolder_Click(object sender, System.EventArgs e)
-        {
-            btnSelectFolder.Enabled = false;
-
-            var folderBrowserDialog1 = new FolderBrowserDialog();
-            folderBrowserDialog1.Description = @"Select the directory that you want to use as the data folder.";
-
-            // Do not allow the user to create new files via the FolderBrowserDialog.
-            folderBrowserDialog1.ShowNewFolderButton = false;
-
-            folderBrowserDialog1.SelectedPath = GetDataFolder();
-
-            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if (Directory.Exists(folderBrowserDialog1.SelectedPath))
-                    txtDataFolder.Text = folderBrowserDialog1.SelectedPath;
-            }
-
-            /*
-             *             if (CsUtils.OpenZipFileDialog(Data.Actions.Yahoo.YahooCommon.MinuteYahooDataFolder) is string fn &&
-                !string.IsNullOrWhiteSpace(fn))
-                Data.Actions.Yahoo.YahooMinuteLogToTextFile.YahooMinuteLogSaveToTextFile(new[] { fn }, ShowStatus);
-
-             */
-
-            /*
-             *         private void ShowStatus(string message)
+        private void ShowStatus(string message)
         {
             if (statusStrip1.InvokeRequired)
                 Invoke(new MethodInvoker(delegate { ShowStatus(message); }));
             else
-                StatusLabel.Text = message;
+                lblStatus.Text = message;
 
             Application.DoEvents();
         }
 
-             */
-            btnSelectFolder.Enabled = true;
+
+        private void btnSelectFolder_Click(object sender, System.EventArgs e)
+        {
+            using (var folderBrowserDialog1 = new FolderBrowserDialog())
+            {
+                folderBrowserDialog1.Description = @"Select the directory that you want to use as the data folder.";
+
+                // Do not allow the user to create new files via the FolderBrowserDialog.
+                folderBrowserDialog1.ShowNewFolderButton = false;
+
+                folderBrowserDialog1.SelectedPath = GetDataFolder();
+
+                folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
+                if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if (Directory.Exists(folderBrowserDialog1.SelectedPath))
+                        txtDataFolder.Text = folderBrowserDialog1.SelectedPath;
+                }
+            }
         }
 
         private async void btnFileSystemSnapshot_Click(object sender, EventArgs e)
@@ -85,12 +75,14 @@ namespace FileSystemAndRegistrySnapshots
             btnFileSystemSnapshot.Enabled = false;
             try
             {
-                var task = ScanFileSystem.SaveFileSystemInfoIntoFile(GetDataFolder());
+                var task = ScanFileSystem.SaveFileSystemInfoIntoFile(GetDataFolder(), ShowStatus);
                 await Task.Factory.StartNew(() => task);
+                ShowStatus($"New FileSystem snapshot file is {task}");
                 MessageBox.Show($"New FileSystem snapshot file is {task}");
             }
             catch (Exception exception)
             {
+                ShowStatus(exception.Message);
                 MessageBox.Show(exception.Message);
             }
 

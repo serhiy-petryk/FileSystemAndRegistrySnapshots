@@ -11,7 +11,7 @@ namespace FileSystemAndRegistrySnapshots
         public static void Start()
         {
             var zipFileName = $"E:\\Temp\\Reg\\FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip";
-            SaveFileSystemInfoIntoFile(zipFileName);
+            SaveFileSystemInfoIntoFile(zipFileName, Helpers.FakeShowStatus);
 
             /*var logFileName1 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162300.zip";
             var logFileName2 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162330.zip";
@@ -119,11 +119,12 @@ namespace FileSystemAndRegistrySnapshots
 
         }
 
-        public static string SaveFileSystemInfoIntoFile(string dataFolder)
+        public static string SaveFileSystemInfoIntoFile(string dataFolder, Action<string> showStatusAction)
         {
             // if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
             if (!Directory.Exists(dataFolder)) throw new Exception($"ERROR! Data folder {dataFolder} doesn't exist");
 
+            showStatusAction("Started");
             var pf86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var pfFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             var pdFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData); // ProgramData
@@ -134,13 +135,18 @@ namespace FileSystemAndRegistrySnapshots
 
             var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
             foreach (var folder in folders)
+            {
+                showStatusAction($"Process folder {Path.GetFileName(folder)}");
                 ProcessFolder(folder, log);
+            }
 
+            showStatusAction("Saving data ..");
             var zipFileName = Path.Combine(dataFolder, $"FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
             var entry = new VirtualFileEntry($"{Path.GetFileNameWithoutExtension(zipFileName)}.txt",
                 System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, log)));
             Helpers.ZipVirtualFileEntries(zipFileName, new[] { entry });
 
+            showStatusAction($"Data saved into {Path.GetFileName(zipFileName)}");
             return zipFileName;
         }
 
