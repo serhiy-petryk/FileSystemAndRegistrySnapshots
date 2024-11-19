@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileSystemAndRegistrySnapshots
@@ -55,9 +56,19 @@ namespace FileSystemAndRegistrySnapshots
             btnSelectFolder.Enabled = true;
         }
 
-        private void btnFileSystemSnapshot_Click(object sender, EventArgs e)
+        private async void btnFileSystemSnapshot_Click(object sender, EventArgs e)
         {
+            btnFileSystemSnapshot.Enabled = false;
+            try
+            {
+                await Task.Factory.StartNew(() => ScanFileSystem.SaveFileSystemInfoIntoFile(GetDataFolder()));
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
 
+            btnFileSystemSnapshot.Enabled = true;
         }
 
         private void btnSelectFirstFileSystemSnapshotFile_Click(object sender, EventArgs e)

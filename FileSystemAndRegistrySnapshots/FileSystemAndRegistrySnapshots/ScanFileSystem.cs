@@ -19,19 +19,12 @@ namespace FileSystemAndRegistrySnapshots
             var differenceFileName = CompareScanFiles(logFileName1, logFileName2);*/
         }
 
-        public static string CheckBeforeCompare(string firstFile, string secondFile)
-        {
-            if (!File.Exists(firstFile)) return $"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'";
-            if (!File.Exists(secondFile)) return $"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'";
-            return null;
-        }
-
         private static string CompareScanFiles(string firstFile, string secondFile)
         {
-            var s = CheckBeforeCompare(firstFile, secondFile);
-            if (s != null) throw new Exception(s);
+            if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
+            if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
 
-            s = Path.GetFileNameWithoutExtension(firstFile);
+            var s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
@@ -126,28 +119,10 @@ namespace FileSystemAndRegistrySnapshots
 
         }
 
-        public static string CheckBeforeSaveFileSystemInfo(string dataFolder)
-        {
-            if (!Helpers.IsAdministrator()) return "ERROR! To read ALL(!!!) files, please, run program in administrator mode";
-            if (!Directory.Exists(dataFolder)) return $"ERROR! Data folder {dataFolder} doesn't exist";
-            return null;
-        }
-
         public static void SaveFileSystemInfoIntoFile(string dataFolder)
         {
-            var s = CheckBeforeSaveFileSystemInfo(dataFolder);
-            if (s != null) throw new Exception("s");
-
-            if (!Helpers.IsAdministrator())
-                throw new Exception("To read ALL(!!!) files, please, run program in administrator mode");
-
-            var zipFileName = Path.Combine(dataFolder, $"FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
-
-            /*var specialFolders = Enum.GetValues(typeof(Environment.SpecialFolder));
-            foreach (Environment.SpecialFolder specialFolder in specialFolders)
-            {
-                Debug.Print($"{specialFolder}\t{Environment.GetFolderPath(specialFolder)}");
-            }*/
+            if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
+            if (!Directory.Exists(dataFolder)) throw new Exception($"ERROR! Data folder {dataFolder} doesn't exist");
 
             var pf86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var pfFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -160,6 +135,7 @@ namespace FileSystemAndRegistrySnapshots
             foreach (var folder in folders)
                 ProcessFolder(folder, log);
 
+            var zipFileName = Path.Combine(dataFolder, $"FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
             var entry = new VirtualFileEntry($"{Path.GetFileNameWithoutExtension(zipFileName)}.txt",
                 System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, log)));
             Helpers.ZipVirtualFileEntries(zipFileName, new[] { entry });

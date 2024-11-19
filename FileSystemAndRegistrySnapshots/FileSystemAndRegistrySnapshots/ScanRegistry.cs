@@ -23,19 +23,12 @@ namespace FileSystemAndRegistrySnapshots
             var differenceFileName = CompareRegistryFiles(firstFile, secondFile);
         }
 
-        public static string CheckBeforeCompare(string firstFile, string secondFile)
-        {
-            if (!File.Exists(firstFile)) return $"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'";
-            if (!File.Exists(secondFile)) return $"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'";
-            return null;
-        }
-
         public static string CompareRegistryFiles(string firstFile, string secondFile)
         {
-            var s = CheckBeforeCompare(firstFile, secondFile);
-            if (s != null) throw new Exception(s);
+            if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
+            if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
 
-            s = Path.GetFileNameWithoutExtension(firstFile);
+            var s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
