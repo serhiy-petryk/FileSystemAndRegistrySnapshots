@@ -11,12 +11,6 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class ScanRegistry
     {
-        private static readonly string[] SkipKeys = new[]
-        {
-            "\\Avast Software\\Avast\\", "\\Office\\16.0\\", "\\VSCommon\\16.0\\", "\\Windows\\Shell\\Bags\\",
-            "\\Windows\\Shell\\BagMRU\\"/*, "\\CurrentVersion\\Explorer\\UserAssist\\"*/
-        };
-
         private static readonly Dictionary<Type, int> ValueTypes = new Dictionary<Type, int>();
         private static int _blankValues = 0;
         private static int _errors = 0;
@@ -26,20 +20,31 @@ namespace FileSystemAndRegistrySnapshots
             var firstFile = @"E:\Temp\Reg\Registry_SSD_240_202411151520.zip";
             var secondFile = @"E:\Temp\Reg\Registry_SSD_240_202411152215.zip";
             // 334 items
-            var differenceFileName = CompareRegistryFiles(firstFile, secondFile, SkipKeys);
+            var differenceFileName = CompareRegistryFiles(firstFile, secondFile);
         }
 
-        private static string CompareRegistryFiles(string firstFile, string secondFile, string[] skipKeys)
+        public static string CheckBeforeCompare(string firstFile, string secondFile)
         {
-            var s = Path.GetFileNameWithoutExtension(firstFile);
+            if (!File.Exists(firstFile)) return $"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'";
+            if (!File.Exists(secondFile)) return $"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'";
+            return null;
+        }
+
+        public static string CompareRegistryFiles(string firstFile, string secondFile)
+        {
+            var s = CheckBeforeCompare(firstFile, secondFile);
+            if (s != null) throw new Exception(s);
+
+            s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
             var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"RegistryDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmmss}.txt");
 
-            var difference = new Dictionary<string, (string, string)>();
             var data1 = ParseZipRegistryFile(firstFile); // 1'879'365
             var data2 = ParseZipRegistryFile(secondFile);
+            var skipKeys = Settings.RegistrySkipKeys;
+            var difference = new Dictionary<string, (string, string)>();
             foreach (var kvp in data1)
             {
                 if (data2.ContainsKey(kvp.Key))

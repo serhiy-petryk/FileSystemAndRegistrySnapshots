@@ -8,25 +8,6 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class ScanFileSystem
     {
-        private static readonly string[] SkipItems2 = new string[]
-        {
-            "\\Program Files\\Avast Software\\", "\\ProgramData\\Avast Software\\", "\\ProgramData\\Microsoft\\RAC\\StateData\\",
-            "\\AppData\\Local\\Google\\Chrome\\User Data\\", "\\AppData\\Local\\JetBrains\\",
-            "\\AppData\\Local\\Microsoft\\VisualStudio\\",
-            "\\AppData\\Local\\Microsoft\\Windows\\Temporary Internet Files\\",
-            "\\AppData\\Local\\Microsoft\\Windows\\WebCache\\", "\\AppData\\Local\\Psiphon3\\",
-            "\\AppData\\Local\\Temp\\","\\AppData\\Roaming\\GitHub Desktop\\", "\\AppData\\Roaming\\Microsoft\\"
-        };
-
-        private static readonly string[] SkipItems = new string[]
-        {
-            "\\Avast Software\\Avast\\", "\\JetBrains\\", "\\Microsoft\\VisualStudio\\", "\\TortoiseHg\\", "\\Psiphon3\\", "\\GitHub Desktop\\",
-            "\\ProgramData\\Microsoft\\RAC\\StateData\\", "\\AppData\\Local\\Google\\Chrome\\User Data\\",
-            "\\AppData\\Local\\Microsoft\\Windows\\Temporary Internet Files\\",
-            "\\AppData\\Local\\Microsoft\\Windows\\WebCache\\",
-            "\\AppData\\Local\\Temp\\", "\\AppData\\Roaming\\Microsoft\\"
-        };
-
         public static void Start()
         {
             var zipFileName = $"E:\\Temp\\Reg\\FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip";
@@ -35,12 +16,22 @@ namespace FileSystemAndRegistrySnapshots
             /*var logFileName1 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162300.zip";
             var logFileName2 = "E:\\Temp\\Reg\\FileSystem_SSD_240_202411162330.zip";
             // 68 items
-            var differenceFileName = CompareScanFiles(logFileName1, logFileName2, SkipItems);*/
+            var differenceFileName = CompareScanFiles(logFileName1, logFileName2);*/
         }
 
-        private static string CompareScanFiles(string firstFile, string secondFile, string[] skipKeys)
+        public static string CheckBeforeCompare(string firstFile, string secondFile)
         {
-            var s = Path.GetFileNameWithoutExtension(firstFile);
+            if (!File.Exists(firstFile)) return $"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'";
+            if (!File.Exists(secondFile)) return $"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'";
+            return null;
+        }
+
+        private static string CompareScanFiles(string firstFile, string secondFile)
+        {
+            var s = CheckBeforeCompare(firstFile, secondFile);
+            if (s != null) throw new Exception(s);
+
+            s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
@@ -48,7 +39,7 @@ namespace FileSystemAndRegistrySnapshots
 
             var data1 = ParseZipScanFile(firstFile); // 1'879'365
             var data2 = ParseZipScanFile(secondFile);
-
+            var skipKeys = Settings.FileSystemSkipKeys;
             var difference = new Dictionary<string, (string, string)>();
             foreach (var kvp in data1)
             {
@@ -135,10 +126,22 @@ namespace FileSystemAndRegistrySnapshots
 
         }
 
-        public static void SaveFileSystemInfoIntoFile(string zipFileName)
+        public static string CheckBeforeSaveFileSystemInfo(string dataFolder)
         {
+            if (!Helpers.IsAdministrator()) return "ERROR! To read ALL(!!!) files, please, run program in administrator mode";
+            if (!Directory.Exists(dataFolder)) return $"ERROR! Data folder {dataFolder} doesn't exist";
+            return null;
+        }
+
+        public static void SaveFileSystemInfoIntoFile(string dataFolder)
+        {
+            var s = CheckBeforeSaveFileSystemInfo(dataFolder);
+            if (s != null) throw new Exception("s");
+
             if (!Helpers.IsAdministrator())
                 throw new Exception("To read ALL(!!!) files, please, run program in administrator mode");
+
+            var zipFileName = Path.Combine(dataFolder, $"FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
 
             /*var specialFolders = Enum.GetValues(typeof(Environment.SpecialFolder));
             foreach (Environment.SpecialFolder specialFolder in specialFolders)
@@ -185,16 +188,16 @@ namespace FileSystemAndRegistrySnapshots
             var tmpFolders = Directory.GetDirectories(folder);
             foreach (var tmpFolder in tmpFolders)
                 ProcessFolder(tmpFolder, log);
-        }
 
-        private static string GetLogString(FileSystemInfo info)
-        {
-            if (info is FileInfo fi)
-                return $"File\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
-            else
-                return $"Dir\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
+            static string GetLogString(FileSystemInfo info)
+            {
+                if (info is FileInfo fi)
+                    return $"File\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
+                else
+                    return $"Dir\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
 
-            string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
+                string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
+            }
         }
     }
 }
