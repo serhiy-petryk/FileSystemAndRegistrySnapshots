@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,29 @@ namespace FileSystemAndRegistrySnapshots
 
             lblStatus.Text = "";
             txtDataFolder.Text = Settings.DataFolder;
+
+            var dataFolder = GetDataFolder();
+            if (Directory.Exists(dataFolder))
+            {
+                var files = Directory.GetFiles(dataFolder, "FileSystem_*.zip")
+                    .OrderByDescending(a => new FileInfo(a).CreationTime).Take(2).ToArray();
+                if (files.Length == 1) txtFirstFileSystemSnapshotFile.Text = files[0];
+                else if (files.Length > 1)
+                {
+                    txtFirstFileSystemSnapshotFile.Text = files[1];
+                    txtSecondFileSystemSnapshotFile.Text = files[0];
+                }
+
+                files = Directory.GetFiles(dataFolder, "Registry_*.zip")
+                    .OrderByDescending(a => new FileInfo(a).CreationTime).Take(2).ToArray();
+                if (files.Length == 1) txtFirstRegistrySnapshotFile.Text = files[0];
+                else if (files.Length > 1)
+                {
+                    txtFirstRegistrySnapshotFile.Text = files[1];
+                    txtSecondRegistrySnapshotFile.Text = files[0];
+                }
+
+            }
         }
 
         private void btnSelectFolder_Click(object sender, System.EventArgs e)
@@ -75,34 +99,42 @@ namespace FileSystemAndRegistrySnapshots
 
         private void btnSelectFirstFileSystemSnapshotFile_Click(object sender, EventArgs e)
         {
-            btnSelectFirstFileSystemSnapshotFile.Enabled = false;
-            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder()) is string fn &&
-                !string.IsNullOrWhiteSpace(fn))
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtFirstFileSystemSnapshotFile.Text,
+                    @"file system zip files (*.zip)|FileSystem_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
             {
                 txtFirstFileSystemSnapshotFile.Text = fn;
             }
-
-            btnSelectFirstFileSystemSnapshotFile.Enabled = true;
-
         }
 
         private void btnSelectSecondFileSystemSnapshotFile_Click(object sender, EventArgs e)
         {
-
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtSecondFileSystemSnapshotFile.Text,
+                    @"file system zip files (*.zip)|FileSystem_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
+            {
+                txtSecondFileSystemSnapshotFile.Text = fn;
+            }
         }
 
         private void btnCompareFileSystemSnapshots_Click(object sender, EventArgs e)
         {
-
         }
+
         private void btnSelectFirstRegistrySnapshotFile_Click(object sender, EventArgs e)
         {
-
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtFirstRegistrySnapshotFile.Text,
+                    @"registry zip files (*.zip)|Registry_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
+            {
+                txtFirstRegistrySnapshotFile.Text = fn;
+            }
         }
 
         private void btnSelectSecondRegistrySnapshotFile_Click(object sender, EventArgs e)
         {
-
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtSecondRegistrySnapshotFile.Text,
+                    @"registry zip files (*.zip)|Registry_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
+            {
+                txtSecondRegistrySnapshotFile.Text = fn;
+            }
         }
 
         private void btnCompareRegistrySnapshots_Click(object sender, EventArgs e)

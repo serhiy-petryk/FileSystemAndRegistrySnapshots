@@ -11,34 +11,22 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class Helpers
     {
-        public static string OpenFileSystemZipFileDialog(string folder) => OpenFileDialogGeneric(folder, @"file system zip files (*.zip)|FileSystem_*.zip");
-        public static string OpenZipFileDialog(string folder) => OpenFileDialogGeneric(folder, @"zip files (*.zip)|*.zip");
-        public static string OpenFileDialogGeneric(string folder, string filter)
+        public static string OpenFileSystemZipFileDialog(string folder, string initialFileName, string filter)
         {
             using (var ofd = new OpenFileDialog())
             {
-                ofd.InitialDirectory = folder;
+                if (File.Exists(initialFileName))
+                {
+                    ofd.InitialDirectory = Path.GetDirectoryName(initialFileName);
+                    ofd.FileName = Path.GetFileName(initialFileName);
+                }
+                else
+                    ofd.InitialDirectory = folder;
                 ofd.RestoreDirectory = true;
                 ofd.Multiselect = false;
                 ofd.Filter = filter;
                 if (ofd.ShowDialog() == DialogResult.OK)
                     return ofd.FileName;
-                return null;
-            }
-        }
-
-        public static string[] OpenFileDialogMultiselect(string folder, string filter, string title = null)
-        {
-            using (var ofd = new OpenFileDialog())
-            {
-                if (!string.IsNullOrWhiteSpace(title))
-                    ofd.Title = title;
-                ofd.InitialDirectory = folder;
-                ofd.RestoreDirectory = true;
-                ofd.Multiselect = true;
-                ofd.Filter = filter;
-                if (ofd.ShowDialog() == DialogResult.OK)
-                    return ofd.FileNames;
                 return null;
             }
         }

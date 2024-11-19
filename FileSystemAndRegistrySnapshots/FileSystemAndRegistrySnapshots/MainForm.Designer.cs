@@ -57,7 +57,7 @@ namespace FileSystemAndRegistrySnapshots
             this.lblStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 272);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(737, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(889, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -71,12 +71,12 @@ namespace FileSystemAndRegistrySnapshots
             // 
             this.txtDataFolder.Location = new System.Drawing.Point(12, 12);
             this.txtDataFolder.Name = "txtDataFolder";
-            this.txtDataFolder.Size = new System.Drawing.Size(346, 23);
+            this.txtDataFolder.Size = new System.Drawing.Size(550, 23);
             this.txtDataFolder.TabIndex = 1;
             // 
             // btnSelectFolder
             // 
-            this.btnSelectFolder.Location = new System.Drawing.Point(374, 11);
+            this.btnSelectFolder.Location = new System.Drawing.Point(568, 11);
             this.btnSelectFolder.Name = "btnSelectFolder";
             this.btnSelectFolder.Size = new System.Drawing.Size(117, 23);
             this.btnSelectFolder.TabIndex = 2;
@@ -86,7 +86,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             // btnFileSystemSnapshot
             // 
-            this.btnFileSystemSnapshot.Location = new System.Drawing.Point(519, 12);
+            this.btnFileSystemSnapshot.Location = new System.Drawing.Point(691, 11);
             this.btnFileSystemSnapshot.Name = "btnFileSystemSnapshot";
             this.btnFileSystemSnapshot.Size = new System.Drawing.Size(182, 23);
             this.btnFileSystemSnapshot.TabIndex = 3;
@@ -103,14 +103,14 @@ namespace FileSystemAndRegistrySnapshots
             this.groupBox1.Controls.Add(this.txtFirstFileSystemSnapshotFile);
             this.groupBox1.Location = new System.Drawing.Point(12, 54);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(710, 90);
+            this.groupBox1.Size = new System.Drawing.Size(867, 90);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Compare file system snapshots";
             // 
             // btnCompareFileSystemSnapshots
             // 
-            this.btnCompareFileSystemSnapshots.Location = new System.Drawing.Point(507, 34);
+            this.btnCompareFileSystemSnapshots.Location = new System.Drawing.Point(679, 35);
             this.btnCompareFileSystemSnapshots.Name = "btnCompareFileSystemSnapshots";
             this.btnCompareFileSystemSnapshots.Size = new System.Drawing.Size(182, 23);
             this.btnCompareFileSystemSnapshots.TabIndex = 6;
@@ -120,7 +120,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             // btnSelectSecondFileSystemSnapshotFile
             // 
-            this.btnSelectSecondFileSystemSnapshotFile.Location = new System.Drawing.Point(362, 50);
+            this.btnSelectSecondFileSystemSnapshotFile.Location = new System.Drawing.Point(556, 51);
             this.btnSelectSecondFileSystemSnapshotFile.Name = "btnSelectSecondFileSystemSnapshotFile";
             this.btnSelectSecondFileSystemSnapshotFile.Size = new System.Drawing.Size(117, 23);
             this.btnSelectSecondFileSystemSnapshotFile.TabIndex = 5;
@@ -130,7 +130,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             // btnSelectFirstFileSystemSnapshotFile
             // 
-            this.btnSelectFirstFileSystemSnapshotFile.Location = new System.Drawing.Point(362, 21);
+            this.btnSelectFirstFileSystemSnapshotFile.Location = new System.Drawing.Point(556, 22);
             this.btnSelectFirstFileSystemSnapshotFile.Name = "btnSelectFirstFileSystemSnapshotFile";
             this.btnSelectFirstFileSystemSnapshotFile.Size = new System.Drawing.Size(117, 23);
             this.btnSelectFirstFileSystemSnapshotFile.TabIndex = 4;
@@ -142,14 +142,14 @@ namespace FileSystemAndRegistrySnapshots
             // 
             this.txtSecondFileSystemSnapshotFile.Location = new System.Drawing.Point(6, 51);
             this.txtSecondFileSystemSnapshotFile.Name = "txtSecondFileSystemSnapshotFile";
-            this.txtSecondFileSystemSnapshotFile.Size = new System.Drawing.Size(346, 23);
+            this.txtSecondFileSystemSnapshotFile.Size = new System.Drawing.Size(544, 23);
             this.txtSecondFileSystemSnapshotFile.TabIndex = 3;
             // 
             // txtFirstFileSystemSnapshotFile
             // 
             this.txtFirstFileSystemSnapshotFile.Location = new System.Drawing.Point(6, 22);
             this.txtFirstFileSystemSnapshotFile.Name = "txtFirstFileSystemSnapshotFile";
-            this.txtFirstFileSystemSnapshotFile.Size = new System.Drawing.Size(346, 23);
+            this.txtFirstFileSystemSnapshotFile.Size = new System.Drawing.Size(544, 23);
             this.txtFirstFileSystemSnapshotFile.TabIndex = 2;
             // 
             // groupBox2
@@ -161,14 +161,14 @@ namespace FileSystemAndRegistrySnapshots
             this.groupBox2.Controls.Add(this.txtFirstRegistrySnapshotFile);
             this.groupBox2.Location = new System.Drawing.Point(12, 161);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(710, 90);
+            this.groupBox2.Size = new System.Drawing.Size(867, 90);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Compare registry snapshots";
             // 
             // btnCompareRegistrySnapshots
             // 
-            this.btnCompareRegistrySnapshots.Location = new System.Drawing.Point(507, 34);
+            this.btnCompareRegistrySnapshots.Location = new System.Drawing.Point(679, 33);
             this.btnCompareRegistrySnapshots.Name = "btnCompareRegistrySnapshots";
             this.btnCompareRegistrySnapshots.Size = new System.Drawing.Size(182, 23);
             this.btnCompareRegistrySnapshots.TabIndex = 6;
@@ -178,7 +178,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             // btnSelectSecondRegistrySnapshotFile
             // 
-            this.btnSelectSecondRegistrySnapshotFile.Location = new System.Drawing.Point(362, 50);
+            this.btnSelectSecondRegistrySnapshotFile.Location = new System.Drawing.Point(556, 50);
             this.btnSelectSecondRegistrySnapshotFile.Name = "btnSelectSecondRegistrySnapshotFile";
             this.btnSelectSecondRegistrySnapshotFile.Size = new System.Drawing.Size(117, 23);
             this.btnSelectSecondRegistrySnapshotFile.TabIndex = 5;
@@ -188,7 +188,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             // btnSelectFirstRegistrySnapshotFile
             // 
-            this.btnSelectFirstRegistrySnapshotFile.Location = new System.Drawing.Point(362, 21);
+            this.btnSelectFirstRegistrySnapshotFile.Location = new System.Drawing.Point(556, 21);
             this.btnSelectFirstRegistrySnapshotFile.Name = "btnSelectFirstRegistrySnapshotFile";
             this.btnSelectFirstRegistrySnapshotFile.Size = new System.Drawing.Size(117, 23);
             this.btnSelectFirstRegistrySnapshotFile.TabIndex = 4;
@@ -200,21 +200,21 @@ namespace FileSystemAndRegistrySnapshots
             // 
             this.txtSecondRegistrySnapshotFile.Location = new System.Drawing.Point(6, 51);
             this.txtSecondRegistrySnapshotFile.Name = "txtSecondRegistrySnapshotFile";
-            this.txtSecondRegistrySnapshotFile.Size = new System.Drawing.Size(346, 23);
+            this.txtSecondRegistrySnapshotFile.Size = new System.Drawing.Size(544, 23);
             this.txtSecondRegistrySnapshotFile.TabIndex = 3;
             // 
             // txtFirstRegistrySnapshotFile
             // 
             this.txtFirstRegistrySnapshotFile.Location = new System.Drawing.Point(6, 22);
             this.txtFirstRegistrySnapshotFile.Name = "txtFirstRegistrySnapshotFile";
-            this.txtFirstRegistrySnapshotFile.Size = new System.Drawing.Size(346, 23);
+            this.txtFirstRegistrySnapshotFile.Size = new System.Drawing.Size(544, 23);
             this.txtFirstRegistrySnapshotFile.TabIndex = 2;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(737, 294);
+            this.ClientSize = new System.Drawing.Size(889, 294);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnFileSystemSnapshot);
@@ -243,7 +243,6 @@ namespace FileSystemAndRegistrySnapshots
         private System.Windows.Forms.Button btnFileSystemSnapshot;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCompareFileSystemSnapshots;
-        private System.Windows.Forms.Button btnSelectSecondFileSystemSnapshotFile;
         private System.Windows.Forms.Button btnSelectFirstFileSystemSnapshotFile;
         private System.Windows.Forms.TextBox txtSecondFileSystemSnapshotFile;
         private System.Windows.Forms.TextBox txtFirstFileSystemSnapshotFile;
@@ -253,6 +252,7 @@ namespace FileSystemAndRegistrySnapshots
         private System.Windows.Forms.Button btnSelectFirstRegistrySnapshotFile;
         private System.Windows.Forms.TextBox txtSecondRegistrySnapshotFile;
         private System.Windows.Forms.TextBox txtFirstRegistrySnapshotFile;
+        private System.Windows.Forms.Button btnSelectSecondFileSystemSnapshotFile;
     }
 }
 
