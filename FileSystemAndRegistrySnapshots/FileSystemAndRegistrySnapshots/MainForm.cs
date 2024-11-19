@@ -112,12 +112,14 @@ namespace FileSystemAndRegistrySnapshots
             btnCompareFileSystemSnapshots.Enabled = false;
             try
             {
-                var task = ScanFileSystem.CompareScanFiles(txtFirstFileSystemSnapshotFile.Text, txtSecondFileSystemSnapshotFile.Text);
+                var task = ScanFileSystem.CompareScanFiles(txtFirstFileSystemSnapshotFile.Text, txtSecondFileSystemSnapshotFile.Text, ShowStatus);
                 await Task.Factory.StartNew(() => task);
+                ShowStatus($"New FileSystem difference file is {task}");
                 MessageBox.Show($"New FileSystem difference file is {task}");
             }
             catch (Exception exception)
             {
+                ShowStatus(exception.Message);
                 MessageBox.Show(exception.Message);
             }
 
@@ -147,12 +149,14 @@ namespace FileSystemAndRegistrySnapshots
             btnCompareRegistrySnapshots.Enabled = false;
             try
             {
-                var task = ScanRegistry.CompareRegistryFiles(txtFirstRegistrySnapshotFile.Text, txtSecondRegistrySnapshotFile.Text);
+                var task = ScanRegistry.CompareRegistryFiles(txtFirstRegistrySnapshotFile.Text, txtSecondRegistrySnapshotFile.Text, ShowStatus);
                 await Task.Factory.StartNew(() => task);
+                ShowStatus($"New registry difference file is {task}");
                 MessageBox.Show($"New registry difference file is {task}");
             }
             catch (Exception exception)
             {
+                ShowStatus(exception.Message);
                 MessageBox.Show(exception.Message);
             }
 

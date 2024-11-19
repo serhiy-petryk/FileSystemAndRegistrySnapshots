@@ -20,10 +20,10 @@ namespace FileSystemAndRegistrySnapshots
             var firstFile = @"E:\Temp\Reg\Registry_SSD_240_202411151520.zip";
             var secondFile = @"E:\Temp\Reg\Registry_SSD_240_202411152215.zip";
             // 334 items
-            var differenceFileName = CompareRegistryFiles(firstFile, secondFile);
+            var differenceFileName = CompareRegistryFiles(firstFile, secondFile, Helpers.FakeShowStatus);
         }
 
-        public static string CompareRegistryFiles(string firstFile, string secondFile)
+        public static string CompareRegistryFiles(string firstFile, string secondFile, Action<string> showStatusAction)
         {
             if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
             if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
@@ -34,7 +34,10 @@ namespace FileSystemAndRegistrySnapshots
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
             var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"RegistryDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmmss}.txt");
 
+            showStatusAction($"Parsing the first file ..");
             var data1 = ParseZipRegistryFile(firstFile); // 1'879'365
+
+            showStatusAction($"Parsing the second file ..");
             var data2 = ParseZipRegistryFile(secondFile);
             var skipKeys = Settings.RegistrySkipKeys;
             var difference = new Dictionary<string, (string, string)>();
@@ -57,6 +60,8 @@ namespace FileSystemAndRegistrySnapshots
                     difference.Add(kvp.Key, (null, data2[kvp.Key] ?? "<NEW>"));
             }
 
+            // Save difference
+            showStatusAction($"Saving data ..");
             using (var writer = new StreamWriter(differenceFileName))
             {
                 writer.WriteLine($"Registry difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
@@ -69,6 +74,7 @@ namespace FileSystemAndRegistrySnapshots
                 string GetLogValue(string value) => value == null ? "<NULL>" : value.Substring(0, Math.Min(value.Length, 32000));
             }
 
+            showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
             return differenceFileName;
         }
 

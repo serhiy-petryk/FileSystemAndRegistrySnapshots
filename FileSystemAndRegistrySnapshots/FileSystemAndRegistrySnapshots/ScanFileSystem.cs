@@ -19,7 +19,7 @@ namespace FileSystemAndRegistrySnapshots
             var differenceFileName = CompareScanFiles(logFileName1, logFileName2);*/
         }
 
-        public static string CompareScanFiles(string firstFile, string secondFile)
+        public static string CompareScanFiles(string firstFile, string secondFile, Action<string> showStatusAction)
         {
             if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
             if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
@@ -28,10 +28,14 @@ namespace FileSystemAndRegistrySnapshots
             var i1 = s.IndexOf('_');
             var i2 = s.LastIndexOf('_');
             var diskLabel = s.Substring(i1 + 1, i2 - i1 - 1);
-            var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"FileDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmmss}.txt");
+            var differenceFileName = Path.Combine(Path.GetDirectoryName(firstFile), $"FileSystemDiff_{diskLabel}_{DateTime.Now:yyyyMMddHHmmss}.txt");
 
+            showStatusAction($"Parsing the first file ..");
             var data1 = ParseZipScanFile(firstFile); // 1'879'365
+
+            showStatusAction($"Parsing the second file ..");
             var data2 = ParseZipScanFile(secondFile);
+
             var skipKeys = Settings.FileSystemSkipKeys;
             var difference = new Dictionary<string, (string, string)>();
             foreach (var kvp in data1)
@@ -54,6 +58,7 @@ namespace FileSystemAndRegistrySnapshots
             }
 
             // Save difference
+            showStatusAction($"Saving data ..");
             using (var writer = new StreamWriter(differenceFileName))
             {
                 writer.WriteLine($"#\tFiles difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
@@ -61,6 +66,10 @@ namespace FileSystemAndRegistrySnapshots
                 foreach (var kvp in difference)
                     writer.WriteLine(GetDiffLine(kvp));
             }
+
+            showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
+            return differenceFileName;
+
 
             string GetDiffLine(KeyValuePair<string, (string, string)> kvp)
             {
@@ -87,8 +96,6 @@ namespace FileSystemAndRegistrySnapshots
 
                 return ($"{kvp.Key}\t{s0}\t{s1}\t{s2}\t{s3}\t{s4}\t{s5}\t{s6}\t{s7}\t{s8}").Trim();
             }
-
-            return differenceFileName;
         }
 
         private static Dictionary<string, string> ParseZipScanFile(string zipFileName)
@@ -121,7 +128,7 @@ namespace FileSystemAndRegistrySnapshots
 
         public static string SaveFileSystemInfoIntoFile(string dataFolder, Action<string> showStatusAction)
         {
-            // if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
+            if (!Helpers.IsAdministrator()) throw new Exception("ERROR! To read ALL(!!!) files, please, run program in administrator mode");
             if (!Directory.Exists(dataFolder)) throw new Exception($"ERROR! Data folder {dataFolder} doesn't exist");
 
             showStatusAction("Started");
@@ -136,7 +143,7 @@ namespace FileSystemAndRegistrySnapshots
             var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
             foreach (var folder in folders)
             {
-                showStatusAction($"Process folder {Path.GetFileName(folder)}");
+                showStatusAction($"Process folder '{folder}' ..");
                 ProcessFolder(folder, log);
             }
 
