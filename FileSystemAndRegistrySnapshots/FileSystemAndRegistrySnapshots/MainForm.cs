@@ -12,6 +12,9 @@ namespace FileSystemAndRegistrySnapshots
         {
             InitializeComponent();
 
+            if (Helpers.IsAdministrator())
+                this.Text += " (ADMINISTRATOR mode)";
+
             lblStatus.Text = "";
             txtDataFolder.Text = Settings.DataFolder;
 
