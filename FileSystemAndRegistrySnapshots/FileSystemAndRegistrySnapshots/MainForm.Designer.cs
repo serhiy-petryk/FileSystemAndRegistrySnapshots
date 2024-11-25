@@ -126,9 +126,9 @@ namespace FileSystemAndRegistrySnapshots
             // btnCompareFileSystemSnapshots
             // 
             this.btnCompareFileSystemSnapshots.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCompareFileSystemSnapshots.Location = new System.Drawing.Point(582, 30);
+            this.btnCompareFileSystemSnapshots.Location = new System.Drawing.Point(583, 19);
             this.btnCompareFileSystemSnapshots.Name = "btnCompareFileSystemSnapshots";
-            this.btnCompareFileSystemSnapshots.Size = new System.Drawing.Size(156, 22);
+            this.btnCompareFileSystemSnapshots.Size = new System.Drawing.Size(156, 45);
             this.btnCompareFileSystemSnapshots.TabIndex = 6;
             this.btnCompareFileSystemSnapshots.Text = "Compare file system snapshots";
             this.btnCompareFileSystemSnapshots.UseVisualStyleBackColor = true;
@@ -193,9 +193,9 @@ namespace FileSystemAndRegistrySnapshots
             // btnCompareRegistrySnapshots
             // 
             this.btnCompareRegistrySnapshots.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCompareRegistrySnapshots.Location = new System.Drawing.Point(582, 29);
+            this.btnCompareRegistrySnapshots.Location = new System.Drawing.Point(583, 19);
             this.btnCompareRegistrySnapshots.Name = "btnCompareRegistrySnapshots";
-            this.btnCompareRegistrySnapshots.Size = new System.Drawing.Size(156, 22);
+            this.btnCompareRegistrySnapshots.Size = new System.Drawing.Size(156, 45);
             this.btnCompareRegistrySnapshots.TabIndex = 6;
             this.btnCompareRegistrySnapshots.Text = "Compare registry snapshots";
             this.btnCompareRegistrySnapshots.UseVisualStyleBackColor = true;
