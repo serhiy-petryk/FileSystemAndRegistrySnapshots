@@ -37,6 +37,14 @@ namespace FileSystemAndRegistrySnapshots
                     txtSecondRegistrySnapshotFile.Text = files[0];
                 }
 
+                files = Directory.GetFiles(dataFolder, "Services_*.zip")
+                    .OrderByDescending(a => new FileInfo(a).CreationTime).Take(2).ToArray();
+                if (files.Length == 1) txtFirstServicesSnapshotFile.Text = files[0];
+                else if (files.Length > 1)
+                {
+                    txtFirstServicesSnapshotFile.Text = files[1];
+                    txtSecondServicesSnapshotFile.Text = files[0];
+                }
             }
         }
 
@@ -113,7 +121,7 @@ namespace FileSystemAndRegistrySnapshots
             btnCompareFileSystemSnapshots.Enabled = false;
             try
             {
-                var task = ScanFileSystem.CompareScanFiles(txtFirstFileSystemSnapshotFile.Text, txtSecondFileSystemSnapshotFile.Text, ShowStatus);
+                var task = ScanFileSystem.CompareFileSystemFiles(txtFirstFileSystemSnapshotFile.Text, txtSecondFileSystemSnapshotFile.Text, ShowStatus);
                 await Task.Factory.StartNew(() => task);
                 ShowStatus($"New FileSystem difference file is {task}");
                 MessageBox.Show($"New FileSystem difference file is {task}");
@@ -169,6 +177,63 @@ namespace FileSystemAndRegistrySnapshots
             if (Directory.Exists(txtDataFolder.Text)) return txtDataFolder.Text;
             if (Directory.Exists(Settings.DataFolder)) return Settings.DataFolder;
             return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        }
+
+        private async void btnServicesSnapshot_Click(object sender, EventArgs e)
+        {
+            btnServicesSnapshot.Enabled = false;
+            try
+            {
+                var task = ScanServices.SaveServiceInfosIntoFile(GetDataFolder(), ShowStatus);
+                await Task.Factory.StartNew(() => task);
+                ShowStatus($"New ServiceList snapshot file is {task}");
+                MessageBox.Show($"New ServiceList snapshot file is {task}");
+            }
+            catch (Exception exception)
+            {
+                ShowStatus(exception.Message);
+                MessageBox.Show(exception.Message);
+            }
+
+            btnServicesSnapshot.Enabled = true;
+        }
+
+        private void btnSelectFirstServicesSnapshotFile_Click(object sender, EventArgs e)
+        {
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtFirstServicesSnapshotFile.Text,
+                    @"service list zip files (*.zip)|Services_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
+            {
+                txtFirstServicesSnapshotFile.Text = fn;
+            }
+        }
+
+        private void btnSelectSecondServicesSnapshotFile_Click(object sender, EventArgs e)
+        {
+            if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtSecondServicesSnapshotFile.Text,
+                    @"service list zip files (*.zip)|Services_*.zip") is string fn && !string.IsNullOrWhiteSpace(fn))
+            {
+                txtSecondServicesSnapshotFile.Text = fn;
+            }
+        }
+
+        private async void btnCompareServicesSnapshots_Click(object sender, EventArgs e)
+        {
+            btnCompareServicesSnapshots.Enabled = false;
+            try
+            {
+                var task = ScanServices.CompareServicesFiles(txtFirstServicesSnapshotFile.Text, txtSecondServicesSnapshotFile.Text, ShowStatus);
+                await Task.Factory.StartNew(() => task);
+                ShowStatus($"New registry difference file is {task}");
+                MessageBox.Show($"New registry difference file is {task}");
+            }
+            catch (Exception exception)
+            {
+                ShowStatus(exception.Message);
+                MessageBox.Show(exception.Message);
+            }
+
+            btnCompareServicesSnapshots.Enabled = true;
+
         }
     }
 }

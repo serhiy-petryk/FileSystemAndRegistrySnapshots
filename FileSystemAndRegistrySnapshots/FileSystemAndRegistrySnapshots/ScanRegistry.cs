@@ -25,8 +25,10 @@ namespace FileSystemAndRegistrySnapshots
 
         public static string CompareRegistryFiles(string firstFile, string secondFile, Action<string> showStatusAction)
         {
-            if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
-            if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
+            if (!File.Exists(firstFile))
+                throw new Exception($"ERROR! The first file '{Path.GetFileName(firstFile)}' doesn't exist'");
+            if (!File.Exists(secondFile))
+                throw new Exception($"ERROR! The second file '{Path.GetFileName(secondFile)}' doesn't exist'");
 
             var s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
@@ -162,21 +164,21 @@ namespace FileSystemAndRegistrySnapshots
                 SaveValue(mainKey, key, valueStrings, data);
 
             return data;
+        }
 
-            static void SaveValue(string mainKey, string key, List<string> valueStrings, Dictionary<string, string> data)
-            {
-                var dataKey = mainKey + ConvertKeyToString(key);
-                if (valueStrings.Count == 0)
-                    data.Add(dataKey, null);
-                else
-                    data.Add(dataKey, string.Join(null, valueStrings));
-                valueStrings.Clear();
-            }
-            static string GetValue(string value)
-            {
-                if (value.EndsWith("\\")) return value.Substring(0, value.Length - 1);
-                return value;
-            }
+        private static void SaveValue(string mainKey, string key, List<string> valueStrings, Dictionary<string, string> data)
+        {
+            var dataKey = mainKey + ConvertKeyToString(key);
+            if (valueStrings.Count == 0)
+                data.Add(dataKey, null);
+            else
+                data.Add(dataKey, string.Join(null, valueStrings));
+            valueStrings.Clear();
+        }
+        private static string GetValue(string value)
+        {
+            if (value.EndsWith("\\")) return value.Substring(0, value.Length - 1);
+            return value;
         }
 
         private static string ConvertKeyToString(string key)

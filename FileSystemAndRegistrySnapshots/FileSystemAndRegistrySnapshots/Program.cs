@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace FileSystemAndRegistrySnapshots
@@ -6,22 +6,17 @@ namespace FileSystemAndRegistrySnapshots
     static class Program
     {
         /// <summary>
-        ///  The main entry point for the application.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Settings.SetZipLibrary();
 
-            // var b = Helpers.IsAdministrator();
-
-            // ScanRegistry.Start2();
-            // ScanFiles.Start();
-            // ScanRegistry.Start();
+            // ScanServices.Start();
 
             Application.Run(new MainForm());
         }

@@ -19,10 +19,12 @@ namespace FileSystemAndRegistrySnapshots
             var differenceFileName = CompareScanFiles(logFileName1, logFileName2);*/
         }
 
-        public static string CompareScanFiles(string firstFile, string secondFile, Action<string> showStatusAction)
+        public static string CompareFileSystemFiles(string firstFile, string secondFile, Action<string> showStatusAction)
         {
-            if (!File.Exists(firstFile)) throw new Exception($"ERROR! File {Path.GetFileName(firstFile)} doesn't exist'");
-            if (!File.Exists(secondFile)) throw new Exception($"ERROR! File {Path.GetFileName(secondFile)} doesn't exist'");
+            if (!File.Exists(firstFile))
+                throw new Exception($"ERROR! The first file '{Path.GetFileName(firstFile)}' doesn't exist'");
+            if (!File.Exists(secondFile))
+                throw new Exception($"ERROR! The second file '{Path.GetFileName(secondFile)}' doesn't exist'");
 
             var s = Path.GetFileNameWithoutExtension(firstFile);
             var i1 = s.IndexOf('_');
@@ -44,7 +46,7 @@ namespace FileSystemAndRegistrySnapshots
                 {
                     if (!object.Equals(data1[kvp.Key], data2[kvp.Key]) && !skipKeys.Any(a => kvp.Key.Contains(a, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        difference.Add(kvp.Key, (data1[kvp.Key], data2[kvp.Key]));
+                            difference.Add(kvp.Key, (data1[kvp.Key], data2[kvp.Key]));
                     }
                 }
                 else if (!skipKeys.Any(a => kvp.Key.Contains(a, StringComparison.InvariantCultureIgnoreCase)))
@@ -69,7 +71,6 @@ namespace FileSystemAndRegistrySnapshots
 
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
             return differenceFileName;
-
 
             string GetDiffLine(KeyValuePair<string, (string, string)> kvp)
             {
@@ -181,15 +182,17 @@ namespace FileSystemAndRegistrySnapshots
             foreach (var tmpFolder in tmpFolders)
                 ProcessFolder(tmpFolder, log);
 
-            static string GetLogString(FileSystemInfo info)
-            {
-                if (info is FileInfo fi)
-                    return $"File\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
-                else
-                    return $"Dir\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
-
-                string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
-            }
         }
+
+        private static string GetLogString(FileSystemInfo info)
+        {
+            if (info is FileInfo fi)
+                return $"File\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
+            else
+                return $"Dir\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
+
+            string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
     }
 }

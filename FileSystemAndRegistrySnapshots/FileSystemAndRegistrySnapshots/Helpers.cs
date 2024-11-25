@@ -12,6 +12,8 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class Helpers
     {
+        public static bool Contains(this string source, string toCheck, StringComparison comp) => source?.IndexOf(toCheck, comp) >= 0;
+
         public static string OpenFileSystemZipFileDialog(string folder, string initialFileName, string filter)
         {
             using (var ofd = new OpenFileDialog())
