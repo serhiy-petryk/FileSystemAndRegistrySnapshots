@@ -68,11 +68,13 @@ namespace FileSystemAndRegistrySnapshots
 
         private void btnSelectFolder_Click(object sender, System.EventArgs e)
         {
-            var folderBrowser = new CommonOpenFileDialog { IsFolderPicker = true, InitialDirectory = GetDataFolder() };
-            if (folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+            using (var folderBrowser = new CommonOpenFileDialog { IsFolderPicker = true, InitialDirectory = GetDataFolder() })
             {
-                if (Directory.Exists(folderBrowser.FileName))
-                    txtDataFolder.Text = folderBrowser.FileName;
+                if (folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    if (Directory.Exists(folderBrowser.FileName))
+                        txtDataFolder.Text = folderBrowser.FileName;
+                }
             }
         }
 
