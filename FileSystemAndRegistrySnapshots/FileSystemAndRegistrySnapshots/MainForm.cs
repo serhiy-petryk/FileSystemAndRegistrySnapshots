@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace FileSystemAndRegistrySnapshots
 {
@@ -67,21 +68,11 @@ namespace FileSystemAndRegistrySnapshots
 
         private void btnSelectFolder_Click(object sender, System.EventArgs e)
         {
-            using (var folderBrowserDialog1 = new FolderBrowserDialog())
+            var folderBrowser = new CommonOpenFileDialog { IsFolderPicker = true, InitialDirectory = GetDataFolder() };
+            if (folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                folderBrowserDialog1.Description = @"Select the directory that you want to use as the data folder.";
-
-                // Do not allow the user to create new files via the FolderBrowserDialog.
-                folderBrowserDialog1.ShowNewFolderButton = false;
-
-                folderBrowserDialog1.SelectedPath = GetDataFolder();
-
-                folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
-                if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    if (Directory.Exists(folderBrowserDialog1.SelectedPath))
-                        txtDataFolder.Text = folderBrowserDialog1.SelectedPath;
-                }
+                if (Directory.Exists(folderBrowser.FileName))
+                    txtDataFolder.Text = folderBrowser.FileName;
             }
         }
 
