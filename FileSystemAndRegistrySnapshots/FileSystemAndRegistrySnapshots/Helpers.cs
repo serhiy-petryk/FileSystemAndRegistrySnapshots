@@ -74,5 +74,12 @@ namespace FileSystemAndRegistrySnapshots
         }
 
         public static void FakeShowStatus(string message) => Debug.Print(message);
+
+        public static void ClearMemory()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
     }
 }

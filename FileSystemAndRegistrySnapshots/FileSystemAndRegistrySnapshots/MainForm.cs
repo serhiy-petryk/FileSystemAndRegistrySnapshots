@@ -58,6 +58,12 @@ namespace FileSystemAndRegistrySnapshots
             Application.DoEvents();
         }
 
+        private string GetDataFolder()
+        {
+            if (Directory.Exists(txtDataFolder.Text)) return txtDataFolder.Text;
+            if (Directory.Exists(Settings.DataFolder)) return Settings.DataFolder;
+            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        }
 
         private void btnSelectFolder_Click(object sender, System.EventArgs e)
         {
@@ -79,6 +85,7 @@ namespace FileSystemAndRegistrySnapshots
             }
         }
 
+        #region =============  File System  ============
         private async void btnFileSystemSnapshot_Click(object sender, EventArgs e)
         {
             btnFileSystemSnapshot.Enabled = false;
@@ -132,9 +139,12 @@ namespace FileSystemAndRegistrySnapshots
                 MessageBox.Show(exception.Message);
             }
 
+            Helpers.ClearMemory();
             btnCompareFileSystemSnapshots.Enabled = true;
         }
+        #endregion;
 
+        #region ============  Registry  =============
         private void btnSelectFirstRegistrySnapshotFile_Click(object sender, EventArgs e)
         {
             if (Helpers.OpenFileSystemZipFileDialog(GetDataFolder(), txtFirstRegistrySnapshotFile.Text,
@@ -169,16 +179,12 @@ namespace FileSystemAndRegistrySnapshots
                 MessageBox.Show(exception.Message);
             }
 
+            Helpers.ClearMemory();
             btnCompareRegistrySnapshots.Enabled = true;
         }
+        #endregion
 
-        private string GetDataFolder()
-        {
-            if (Directory.Exists(txtDataFolder.Text)) return txtDataFolder.Text;
-            if (Directory.Exists(Settings.DataFolder)) return Settings.DataFolder;
-            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-        }
-
+        #region ==========  Services  ===========
         private async void btnServicesSnapshot_Click(object sender, EventArgs e)
         {
             btnServicesSnapshot.Enabled = false;
@@ -234,6 +240,8 @@ namespace FileSystemAndRegistrySnapshots
 
             btnCompareServicesSnapshots.Enabled = true;
 
+            Helpers.ClearMemory();
         }
+        #endregion
     }
 }
