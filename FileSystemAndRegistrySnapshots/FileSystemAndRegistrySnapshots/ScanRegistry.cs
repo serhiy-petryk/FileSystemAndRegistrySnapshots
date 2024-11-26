@@ -64,20 +64,17 @@ namespace FileSystemAndRegistrySnapshots
 
             // Save difference
             showStatusAction($"Saving data ..");
-            using (var writer = new StreamWriter(differenceFileName))
-            {
-                writer.WriteLine($"Registry difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
-                writer.WriteLine("Key\tValue1\tValue2");
-                foreach (var kvp in difference)
-                {
-                    writer.WriteLine($"{kvp.Key}\t{GetLogValue(kvp.Value.Item1)}\t{GetLogValue(kvp.Value.Item2)}");
-                }
-
-                string GetLogValue(string value) => value == null ? "<NULL>" : value.Substring(0, Math.Min(value.Length, 32000));
-            }
+            var data = new List<string>();
+            data.Add($"Registry difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
+            data.Add("Key\tValue1\tValue2");
+            foreach (var kvp in difference)
+                data.Add($"{kvp.Key}\t{GetLogValue(kvp.Value.Item1)}\t{GetLogValue(kvp.Value.Item2)}");
+            Helpers.SaveStringsToZipFile(differenceFileName, data);
 
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
             return differenceFileName;
+
+            string GetLogValue(string value) => value == null ? "<NULL>" : value.Substring(0, Math.Min(value.Length, 32000));
         }
 
         private static Dictionary<string, string> ParseZipRegistryFile(string zipFileName)

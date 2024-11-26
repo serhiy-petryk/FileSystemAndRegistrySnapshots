@@ -61,13 +61,11 @@ namespace FileSystemAndRegistrySnapshots
 
             // Save difference
             showStatusAction($"Saving data ..");
-            using (var writer = new StreamWriter(differenceFileName))
-            {
-                writer.WriteLine($"#\tFiles difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
-                writer.WriteLine("Type\tName\tDiff\tWritten1\tWritten2\tCreated1\tCreated2\tAccessed1\tAccessed2\tSize1\tSize2");
-                foreach (var kvp in difference)
-                    writer.WriteLine(GetDiffLine(kvp));
-            }
+            var data = new List<string>();
+            data.Add($"#\tFiles difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
+            data.Add("Type\tName\tDiff\tWritten1\tWritten2\tCreated1\tCreated2\tAccessed1\tAccessed2\tSize1\tSize2");
+            data.AddRange(difference.Select(GetDiffLine));
+            Helpers.SaveStringsToZipFile(differenceFileName, data);
 
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
             return differenceFileName;
@@ -145,14 +143,12 @@ namespace FileSystemAndRegistrySnapshots
             foreach (var folder in folders)
             {
                 showStatusAction($"Process folder '{folder}' ..");
-                ProcessFolder(folder, log);
+                ProcessFolder("\\\\?\\"+folder, log);
             }
 
             showStatusAction("Saving data ..");
             var zipFileName = Path.Combine(dataFolder, $"FileSystem_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
-            var entry = new VirtualFileEntry($"{Path.GetFileNameWithoutExtension(zipFileName)}.txt",
-                System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, log)));
-            Helpers.ZipVirtualFileEntries(zipFileName, new[] { entry });
+            Helpers.SaveStringsToZipFile(zipFileName, log);
 
             showStatusAction($"Data saved into {Path.GetFileName(zipFileName)}");
             return zipFileName;
@@ -166,6 +162,7 @@ namespace FileSystemAndRegistrySnapshots
             try
             {
                 var tmpFiles = Directory.GetFiles(folder);
+                var x1 = tmpFiles.Where(a => a.Length > 259).ToArray();
                 log.AddRange(tmpFiles.Select(a => GetLogString(new FileInfo(a))));
             }
             catch (UnauthorizedAccessException)
@@ -182,17 +179,17 @@ namespace FileSystemAndRegistrySnapshots
             foreach (var tmpFolder in tmpFolders)
                 ProcessFolder(tmpFolder, log);
 
+            //===============================================
+            string GetLogString(FileSystemInfo info)
+            {
+                if (info is FileInfo fi)
+                    return $"File\t{GetFileName(info.FullName)}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
+                else
+                    return $"Dir\t{GetFileName(info.FullName)}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
+
+                string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
+                string GetFileName(string filename) => filename.StartsWith("\\\\?\\") ? filename.Substring(4) : filename;
+            }
         }
-
-        private static string GetLogString(FileSystemInfo info)
-        {
-            if (info is FileInfo fi)
-                return $"File\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
-            else
-                return $"Dir\t{info.FullName}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
-
-            string DateToString(DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss");
-        }
-
     }
 }

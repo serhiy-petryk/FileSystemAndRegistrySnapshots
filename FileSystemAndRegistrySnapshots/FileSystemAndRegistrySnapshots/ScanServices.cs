@@ -57,14 +57,12 @@ namespace FileSystemAndRegistrySnapshots
 
             // Save difference
             showStatusAction($"Saving data ..");
-            using (var writer = new StreamWriter(differenceFileName))
-            {
-                writer.WriteLine($"Services difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
-                writer.WriteLine("Service\tDifference\tDisplayName1\tDisplayName2\tStatus1\tStatus2\tStartType1\tStartType2");
-                foreach (var kvp in difference)
-                    writer.WriteLine(GetDiffLine(kvp));
-            }
-
+            var data = new List<string>();
+            data.Add($"Services difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
+            data.Add("Service\tDifference\tDisplayName1\tDisplayName2\tStatus1\tStatus2\tStartType1\tStartType2");
+            data.AddRange(difference.Select(GetDiffLine));
+            Helpers.SaveStringsToZipFile(differenceFileName, data);
+            
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
             return differenceFileName;
 
@@ -131,9 +129,7 @@ namespace FileSystemAndRegistrySnapshots
 
             showStatusAction("Saving data ..");
             var zipFileName = Path.Combine(dataFolder, $"Services_{Helpers.GetSystemDriveLabel()}_{DateTime.Now:yyyyMMddHHmm}.zip");
-            var entry = new VirtualFileEntry($"{Path.GetFileNameWithoutExtension(zipFileName)}.txt",
-                System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, log)));
-            Helpers.ZipVirtualFileEntries(zipFileName, new[] { entry });
+            Helpers.SaveStringsToZipFile(zipFileName, log);
 
             showStatusAction($"Data saved into {Path.GetFileName(zipFileName)}");
             return zipFileName;
