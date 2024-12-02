@@ -14,10 +14,10 @@ namespace FileSystemAndRegistrySnapshots
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Settings.SetZipLibrary();
-
-            Helpers.GetAllSpecialFolders();
+            // Helpers.GetAllSpecialFolders();
             // ScanServices.Start();
+
+            Settings.SetZipLibrary();
 
             Application.Run(new MainForm());
         }

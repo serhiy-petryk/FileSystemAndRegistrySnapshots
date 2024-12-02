@@ -60,7 +60,7 @@ namespace FileSystemAndRegistrySnapshots
             var data = new List<string>();
             data.Add($"Services difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
             data.Add("Service\tDifference\tDisplayName1\tDisplayName2\tStatus1\tStatus2\tStartType1\tStartType2");
-            data.AddRange(difference.Select(GetDiffLine));
+            data.AddRange(difference.OrderBy(a => a.Key).Select(GetDiffLine));
             Helpers.SaveStringsToZipFile(differenceFileName, data);
             
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");

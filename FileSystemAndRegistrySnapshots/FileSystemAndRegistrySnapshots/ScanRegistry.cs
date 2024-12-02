@@ -67,7 +67,7 @@ namespace FileSystemAndRegistrySnapshots
             var data = new List<string>();
             data.Add($"Registry difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
             data.Add("Key\tValue1\tValue2");
-            foreach (var kvp in difference)
+            foreach (var kvp in difference.OrderBy(a => a.Key.StartsWith("@") ? a.Key.Substring(1) : a.Key).ToArray())
                 data.Add($"{kvp.Key}\t{GetLogValue(kvp.Value.Item1)}\t{GetLogValue(kvp.Value.Item2)}");
             Helpers.SaveStringsToZipFile(differenceFileName, data);
 
