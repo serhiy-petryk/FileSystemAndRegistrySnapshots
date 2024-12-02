@@ -55,7 +55,7 @@ namespace FileSystemAndRegistrySnapshots
 
             foreach (var kvp in data2)
             {
-                if (!data2.ContainsKey(kvp.Key) && !skipKeys.Any(a => kvp.Key.Contains(a, StringComparison.InvariantCultureIgnoreCase)))
+                if (!data1.ContainsKey(kvp.Key) && !skipKeys.Any(a => kvp.Key.Contains(a, StringComparison.InvariantCultureIgnoreCase)))
                     difference.Add(kvp.Key, (null, data2[kvp.Key]));
             }
 
@@ -64,7 +64,7 @@ namespace FileSystemAndRegistrySnapshots
             var data = new List<string>();
             data.Add($"#\tFiles difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
             data.Add("Type\tName\tDiff\tWritten1\tWritten2\tCreated1\tCreated2\tAccessed1\tAccessed2\tSize1\tSize2");
-            data.AddRange(difference.Select(GetDiffLine));
+            data.AddRange(difference.OrderBy(a=>a.Key.Split('\t')[1]).Select(GetDiffLine));
             Helpers.SaveStringsToZipFile(differenceFileName, data);
 
             showStatusAction($"Data saved into {Path.GetFileName(differenceFileName)}");
@@ -134,10 +134,11 @@ namespace FileSystemAndRegistrySnapshots
             var pf86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var pfFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             var pdFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData); // ProgramData
-            var udFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName; // User/AppData
+            // var udFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName; // User/AppData
+            var usersFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).FullName; // User/AppData
             var wndFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            var folders = new[] { pf86Folder, pfFolder, pdFolder, udFolder, wndFolder }.Distinct().ToArray();
-            var folders2 = new[] { pf86Folder }.Distinct().ToArray();
+            var folders = new[] { pf86Folder, pfFolder, pdFolder, usersFolder, wndFolder }.Distinct().ToArray();
+            // var folders2 = new[] { pf86Folder }.Distinct().ToArray();
 
             var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
             foreach (var folder in folders)

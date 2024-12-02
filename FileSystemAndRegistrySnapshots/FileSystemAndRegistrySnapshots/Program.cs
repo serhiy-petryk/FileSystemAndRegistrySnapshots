@@ -16,6 +16,7 @@ namespace FileSystemAndRegistrySnapshots
 
             Settings.SetZipLibrary();
 
+            Helpers.GetAllSpecialFolders();
             // ScanServices.Start();
 
             Application.Run(new MainForm());

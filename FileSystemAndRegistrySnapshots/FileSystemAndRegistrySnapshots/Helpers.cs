@@ -12,6 +12,13 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class Helpers
     {
+        public static void GetAllSpecialFolders()
+        {
+            var folders = Enum.GetValues(typeof(Environment.SpecialFolder));
+            foreach (Environment.SpecialFolder folder in folders)
+                Debug.Print($"{folder}\t{Environment.GetFolderPath(folder)}");
+        }
+
         public static bool Contains(this string source, string toCheck, StringComparison comp) => source?.IndexOf(toCheck, comp) >= 0;
 
         public static string OpenFileSystemZipFileDialog(string folder, string initialFileName, string filter)

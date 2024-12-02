@@ -51,7 +51,7 @@ namespace FileSystemAndRegistrySnapshots
             
             foreach (var kvp in data2)
             {
-                if (!data2.ContainsKey(kvp.Key))
+                if (!data1.ContainsKey(kvp.Key))
                     difference.Add(kvp.Key, (null, data2[kvp.Key]));
             }
 
