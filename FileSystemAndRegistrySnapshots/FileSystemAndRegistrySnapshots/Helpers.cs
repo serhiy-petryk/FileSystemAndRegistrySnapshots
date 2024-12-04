@@ -14,58 +14,6 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class Helpers
     {
-        public static void Test()
-        {
-            var fn = @"I:\ProgramData\Avast Software\Avast\FileInfo2.db";
-            var bytes = ReadAllBytes(fn);
-            using (var fileStream = new FileStream(fn, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                using (StreamReader sr = new StreamReader(fileStream))
-                {
-                    var content = sr.ReadToEnd();
-                }
-            }
-            /*using fileStream = New FileStream("path", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-            Using streamReader = New StreamReader(fileStream)
-            Dim content = streamReader.ReadToEnd()
-            End Using
-            End Using*/
-
-            var a = ComputeSha256Hash(File.ReadAllBytes(fn));
-        }
-
-        private static byte[] ReadAllBytes(string fileName)
-        {
-            byte[] buffer = null;
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, (int)fs.Length);
-            }
-            return buffer;
-        }
-
-        public static string ComputeFileSha256Hash(string fullFileName) =>
-            ComputeSha256Hash(ReadAllBytes(fullFileName));
-
-        public static string ComputeSha256Hash(byte[] rawData)
-        {
-            // Create a SHA256
-            using (var sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array
-                var bytes = sha256Hash.ComputeHash(rawData);
-
-                // Convert byte array to a string
-                var builder = new StringBuilder();
-                for (var i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
-
         public static string GetUsersFolderPath() => Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).FullName;
 
         public static void GetAllSpecialFolders()
