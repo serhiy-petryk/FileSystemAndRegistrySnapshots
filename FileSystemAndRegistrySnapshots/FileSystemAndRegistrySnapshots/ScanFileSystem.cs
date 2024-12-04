@@ -63,7 +63,7 @@ namespace FileSystemAndRegistrySnapshots
             showStatusAction($"Saving data ..");
             var data = new List<string>();
             data.Add($"#\tFiles difference: {Path.GetFileName(firstFile)} and {Path.GetFileName(secondFile)}");
-            data.Add("Type\tName\tDiff\tWritten1\tWritten2\tCreated1\tCreated2\tAccessed1\tAccessed2\tSize1\tSize2");
+            data.Add("Type\tName\tDiff\tWritten1\tWritten2\tCreated1\tCreated2\tAccessed1\tAccessed2\tSize1\tSize2\tSHA256_1\tSHA256_2");
             data.AddRange(difference.OrderBy(a=>a.Key.Split('\t')[1]).Select(GetDiffLine));
             Helpers.SaveStringsToZipFile(differenceFileName, data);
 
@@ -82,18 +82,21 @@ namespace FileSystemAndRegistrySnapshots
                 var s6 = ss2.Length > 4 ? ss2[4] : null;
                 var s7 = ss1.Length > 5 ? ss1[5] : null;
                 var s8 = ss2.Length > 5 ? ss2[5] : null;
+                var s9 = ss1.Length > 6 ? ss1[6] : null;
+                var s10 = ss2.Length > 6 ? ss2[6] : null;
 
                 string s0;
                 if (ss1.Length == 0 && ss2.Length == 0) s0 = "Denied";
                 else if (ss1.Length == 0) s0 = "Only2";
                 else if (ss2.Length == 0) s0 = "Only1";
                 else if (ss1.Length > 5 && ss2.Length > 5 && !string.Equals(s7, s8)) s0 = "Size";
+                else if (ss1.Length > 6 && ss2.Length > 6 && !string.Equals(s9, s10)) s0 = "Sha256";
                 else if (ss1.Length > 2 && ss2.Length > 2 && !string.Equals(s1, s2)) s0 = "Written";
                 else if (ss1.Length > 3 && ss2.Length > 3 && !string.Equals(s3, s4)) s0 = "Created";
                 else if (ss1.Length > 4 && ss2.Length > 4 && !string.Equals(s5, s6)) s0 = "Accessed";
                 else throw new Exception("Check program!");
 
-                return ($"{kvp.Key}\t{s0}\t{s1}\t{s2}\t{s3}\t{s4}\t{s5}\t{s6}\t{s7}\t{s8}").Trim();
+                return ($"{kvp.Key}\t{s0}\t{s1}\t{s2}\t{s3}\t{s4}\t{s5}\t{s6}\t{s7}\t{s8}\t{s9}\t{s10}").Trim();
             }
         }
 
@@ -109,7 +112,7 @@ namespace FileSystemAndRegistrySnapshots
                     {
                         if (!checkHeader)
                         {
-                            if (!string.Equals(s, "Type\tName\tWritten\tCreated\tAccessed\tSize", StringComparison.InvariantCulture))
+                            if (!string.Equals(s, "Type\tName\tWritten\tCreated\tAccessed\tSize\tSHA256", StringComparison.InvariantCulture))
                                 throw new Exception($"Check header of scan file {Path.GetFileName(zipFileName)}");
                             checkHeader = true;
                             continue;
@@ -132,7 +135,7 @@ namespace FileSystemAndRegistrySnapshots
 
             showStatusAction("Started");
 
-            var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
+            var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize\tSHA256" };
             foreach (var folder in Settings.FoldersForFileScan)
             {
                 showStatusAction($"Process folder '{folder}' ..");
@@ -155,7 +158,6 @@ namespace FileSystemAndRegistrySnapshots
             try
             {
                 var tmpFiles = Directory.GetFiles(folder);
-                var x1 = tmpFiles.Where(a => a.Length > 259).ToArray();
                 log.AddRange(tmpFiles.Select(a => GetLogString(new FileInfo(a))));
             }
             catch (UnauthorizedAccessException)
@@ -176,7 +178,7 @@ namespace FileSystemAndRegistrySnapshots
             string GetLogString(FileSystemInfo info)
             {
                 if (info is FileInfo fi)
-                    return $"File\t{GetFileName(info.FullName)}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}";
+                    return $"File\t{GetFileName(info.FullName)}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}\t{fi.Length}\t{Helpers.ComputeFileSha256Hash(info.FullName)}";
                 else
                     return $"Dir\t{GetFileName(info.FullName)}\t{DateToString(info.LastWriteTime)}\t{DateToString(info.CreationTime)}\t{DateToString(info.LastAccessTime)}";
 
