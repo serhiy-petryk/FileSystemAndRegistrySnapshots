@@ -12,6 +12,8 @@ namespace FileSystemAndRegistrySnapshots
 {
     public static class Helpers
     {
+        public static string GetUsersFolderPath() => Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).FullName;
+
         public static void GetAllSpecialFolders()
         {
             var folders = Enum.GetValues(typeof(Environment.SpecialFolder));

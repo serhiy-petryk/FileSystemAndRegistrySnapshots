@@ -1,4 +1,5 @@
-﻿using SevenZip;
+﻿using System;
+using SevenZip;
 
 namespace FileSystemAndRegistrySnapshots
 {
@@ -32,6 +33,16 @@ namespace FileSystemAndRegistrySnapshots
             "\\Windows\\Shell\\BagMRU\\"/*, "\\CurrentVersion\\Explorer\\UserAssist\\"*/
         };
 
-
+        public static string[] FoldersForFileScan = new[]
+        {
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), // ProgramData
+            // var udFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName; // User/AppData
+            Helpers.GetUsersFolderPath(),
+            // var usersFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).FullName; // User/AppData
+            Environment.GetFolderPath(Environment.SpecialFolder.Windows)
+        };
     }
 }
+

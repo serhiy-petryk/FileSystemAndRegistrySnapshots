@@ -53,6 +53,7 @@ namespace FileSystemAndRegistrySnapshots
             this.btnSelectFirstServicesSnapshotFile = new System.Windows.Forms.Button();
             this.txtSecondServicesSnapshotFile = new System.Windows.Forms.TextBox();
             this.txtFirstServicesSnapshotFile = new System.Windows.Forms.TextBox();
+            this.lblUsersFolderPath = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -80,7 +81,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             this.txtDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDataFolder.Location = new System.Drawing.Point(10, 10);
+            this.txtDataFolder.Location = new System.Drawing.Point(10, 35);
             this.txtDataFolder.Name = "txtDataFolder";
             this.txtDataFolder.Size = new System.Drawing.Size(472, 20);
             this.txtDataFolder.TabIndex = 1;
@@ -88,7 +89,7 @@ namespace FileSystemAndRegistrySnapshots
             // btnSelectFolder
             // 
             this.btnSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectFolder.Location = new System.Drawing.Point(487, 10);
+            this.btnSelectFolder.Location = new System.Drawing.Point(487, 35);
             this.btnSelectFolder.Name = "btnSelectFolder";
             this.btnSelectFolder.Size = new System.Drawing.Size(100, 22);
             this.btnSelectFolder.TabIndex = 2;
@@ -319,11 +320,23 @@ namespace FileSystemAndRegistrySnapshots
             this.txtFirstServicesSnapshotFile.Size = new System.Drawing.Size(467, 20);
             this.txtFirstServicesSnapshotFile.TabIndex = 2;
             // 
+            // lblUsersFolderPath
+            // 
+            this.lblUsersFolderPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lblUsersFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblUsersFolderPath.Location = new System.Drawing.Point(15, 10);
+            this.lblUsersFolderPath.Name = "lblUsersFolderPath";
+            this.lblUsersFolderPath.ReadOnly = true;
+            this.lblUsersFolderPath.Size = new System.Drawing.Size(467, 13);
+            this.lblUsersFolderPath.TabIndex = 9;
+            this.lblUsersFolderPath.Text = "Label";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(762, 338);
+            this.Controls.Add(this.lblUsersFolderPath);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnServicesSnapshot);
             this.Controls.Add(this.groupBox2);
@@ -373,6 +386,7 @@ namespace FileSystemAndRegistrySnapshots
         private System.Windows.Forms.Button btnSelectFirstServicesSnapshotFile;
         private System.Windows.Forms.TextBox txtSecondServicesSnapshotFile;
         private System.Windows.Forms.TextBox txtFirstServicesSnapshotFile;
+        private System.Windows.Forms.TextBox lblUsersFolderPath;
     }
 }
 

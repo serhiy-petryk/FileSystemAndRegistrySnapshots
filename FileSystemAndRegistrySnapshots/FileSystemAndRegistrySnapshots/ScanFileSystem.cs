@@ -131,17 +131,9 @@ namespace FileSystemAndRegistrySnapshots
             if (!Directory.Exists(dataFolder)) throw new Exception($"ERROR! Data folder {dataFolder} doesn't exist");
 
             showStatusAction("Started");
-            var pf86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            var pfFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            var pdFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData); // ProgramData
-            // var udFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName; // User/AppData
-            var usersFolder = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).FullName; // User/AppData
-            var wndFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            var folders = new[] { pf86Folder, pfFolder, pdFolder, usersFolder, wndFolder }.Distinct().ToArray();
-            // var folders2 = new[] { pf86Folder }.Distinct().ToArray();
 
             var log = new List<string> { $"Type\tName\tWritten\tCreated\tAccessed\tSize" };
-            foreach (var folder in folders)
+            foreach (var folder in Settings.FoldersForFileScan)
             {
                 showStatusAction($"Process folder '{folder}' ..");
                 ProcessFolder("\\\\?\\"+folder, log);

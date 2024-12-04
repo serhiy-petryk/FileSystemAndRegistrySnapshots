@@ -14,6 +14,7 @@ namespace FileSystemAndRegistrySnapshots
             InitializeComponent();
 
             if (Helpers.IsAdministrator()) this.Text += " (ADMINISTRATOR mode)";
+            lblUsersFolderPath.Text = $"Users folder is {Helpers.GetUsersFolderPath()}";
             lblStatus.Text = "";
             txtDataFolder.Text = Settings.DataFolder;
 
