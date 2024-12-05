@@ -54,6 +54,7 @@ namespace FileSystemAndRegistrySnapshots
             this.txtSecondServicesSnapshotFile = new System.Windows.Forms.TextBox();
             this.txtFirstServicesSnapshotFile = new System.Windows.Forms.TextBox();
             this.lblUsersFolderPath = new System.Windows.Forms.TextBox();
+            this.btnFirewallRulesSnapshot = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -64,7 +65,7 @@ namespace FileSystemAndRegistrySnapshots
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 316);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 368);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
             this.statusStrip1.Size = new System.Drawing.Size(762, 22);
@@ -117,7 +118,7 @@ namespace FileSystemAndRegistrySnapshots
             this.groupBox1.Controls.Add(this.btnSelectFirstFileSystemSnapshotFile);
             this.groupBox1.Controls.Add(this.txtSecondFileSystemSnapshotFile);
             this.groupBox1.Controls.Add(this.txtFirstFileSystemSnapshotFile);
-            this.groupBox1.Location = new System.Drawing.Point(10, 63);
+            this.groupBox1.Location = new System.Drawing.Point(10, 96);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(743, 78);
             this.groupBox1.TabIndex = 4;
@@ -184,7 +185,7 @@ namespace FileSystemAndRegistrySnapshots
             this.groupBox2.Controls.Add(this.btnSelectFirstRegistrySnapshotFile);
             this.groupBox2.Controls.Add(this.txtSecondRegistrySnapshotFile);
             this.groupBox2.Controls.Add(this.txtFirstRegistrySnapshotFile);
-            this.groupBox2.Location = new System.Drawing.Point(10, 147);
+            this.groupBox2.Location = new System.Drawing.Point(10, 180);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(743, 78);
             this.groupBox2.TabIndex = 5;
@@ -262,7 +263,7 @@ namespace FileSystemAndRegistrySnapshots
             this.groupBox3.Controls.Add(this.btnSelectFirstServicesSnapshotFile);
             this.groupBox3.Controls.Add(this.txtSecondServicesSnapshotFile);
             this.groupBox3.Controls.Add(this.txtFirstServicesSnapshotFile);
-            this.groupBox3.Location = new System.Drawing.Point(10, 231);
+            this.groupBox3.Location = new System.Drawing.Point(10, 264);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(743, 78);
             this.groupBox3.TabIndex = 7;
@@ -331,11 +332,23 @@ namespace FileSystemAndRegistrySnapshots
             this.lblUsersFolderPath.TabIndex = 9;
             this.lblUsersFolderPath.Text = "Label";
             // 
+            // btnFirewallRulesSnapshot
+            // 
+            this.btnFirewallRulesSnapshot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFirewallRulesSnapshot.Location = new System.Drawing.Point(592, 63);
+            this.btnFirewallRulesSnapshot.Name = "btnFirewallRulesSnapshot";
+            this.btnFirewallRulesSnapshot.Size = new System.Drawing.Size(156, 22);
+            this.btnFirewallRulesSnapshot.TabIndex = 10;
+            this.btnFirewallRulesSnapshot.Text = "Make firewall rules snapshot";
+            this.btnFirewallRulesSnapshot.UseVisualStyleBackColor = true;
+            this.btnFirewallRulesSnapshot.Click += new System.EventHandler(this.btnFirewallRulesSnapshot_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 338);
+            this.ClientSize = new System.Drawing.Size(762, 390);
+            this.Controls.Add(this.btnFirewallRulesSnapshot);
             this.Controls.Add(this.lblUsersFolderPath);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnServicesSnapshot);
@@ -387,6 +400,7 @@ namespace FileSystemAndRegistrySnapshots
         private System.Windows.Forms.TextBox txtSecondServicesSnapshotFile;
         private System.Windows.Forms.TextBox txtFirstServicesSnapshotFile;
         private System.Windows.Forms.TextBox lblUsersFolderPath;
+        private System.Windows.Forms.Button btnFirewallRulesSnapshot;
     }
 }
 

@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.11.0.0, Culture=neutral, PublicKeyToken=e25603a88b3aa7da, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.11.0\lib\net45\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -68,6 +72,7 @@
     <Compile Include="ScanFirewall.cs" />
     <Compile Include="ScanRegistry.cs" />
     <Compile Include="ScanServices.cs" />
+    <Compile Include="ScanTaskScheduler.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="VirtualFileEntry.cs" />
     <EmbeddedResource Include="MainForm.resx">

@@ -14,9 +14,12 @@ namespace FileSystemAndRegistrySnapshots
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // ScanRegistry.ReadRegistry();
             // Helpers.GetAllSpecialFolders();
             // ScanServices.Start();
-            ScanFirewall.Temp();
+            // ScanFirewall.Temp();
+            // ScanTaskScheduler.Test();
+            // Helpers.Test();
 
             Settings.SetZipLibrary();
 

@@ -237,5 +237,26 @@ namespace FileSystemAndRegistrySnapshots
             Helpers.ClearMemory();
         }
         #endregion
+
+        #region =========  Firewall rules  ============
+        private async void btnFirewallRulesSnapshot_Click(object sender, EventArgs e)
+        {
+            btnFirewallRulesSnapshot.Enabled = false;
+            try
+            {
+                var task = ScanFirewall.SaveFirewallRulesIntoFile(GetDataFolder(), ShowStatus);
+                await Task.Factory.StartNew(() => task);
+                ShowStatus($"New FirewallRules snapshot file is {task}");
+                MessageBox.Show($"New FirewallRules snapshot file is {task}");
+            }
+            catch (Exception exception)
+            {
+                ShowStatus(exception.Message);
+                MessageBox.Show(exception.Message);
+            }
+
+            btnFirewallRulesSnapshot.Enabled = true;
+        }
+        #endregion
     }
 }

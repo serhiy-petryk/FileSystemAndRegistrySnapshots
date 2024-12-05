@@ -239,6 +239,8 @@ namespace FileSystemAndRegistrySnapshots
             foreach (var valueName in valueNames)
             {
                 var obj = key.GetValue(valueName);
+                if (obj == null) continue;
+
                 var type = obj.GetType();
                 if (!ValueTypes.ContainsKey(type))
                     ValueTypes.Add(type, 0);
